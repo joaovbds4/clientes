@@ -10,12 +10,12 @@ app.get('/clientes', (req, res) => {
 app.put('/clientes', async (req, res) => {
     contador++;
     const {
-        nome, endereço, idade, status
+        nome, endereco, idade, status
     } = req.body;
     clientes[contador] = {
         contador,
         nome,
-        endereço,
+        endereco,
         idade,
         status
     }
@@ -24,12 +24,22 @@ app.put('/clientes', async (req, res) => {
         dados: {
             contador,
             nome,
-            endereço,
+            endereco,
             idade,
             status
         },
     });
     res.status(201).send(clientes[contador]);
+});
+
+app.delete("/clientes", (req, res, next) =>{
+    clientes.forEach(cliente =>{
+        if(cliente.contador === req.body.contador){
+            const index  = clientes.indexOf(cliente);
+            clientes.splice(index,1);
+        }
+    })
+    res.status(201).json(clientes);
 });
 app.listen(4000, () => {
     console.log('Clientes. Porta 4000');
